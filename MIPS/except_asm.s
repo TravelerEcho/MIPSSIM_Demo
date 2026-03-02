@@ -1,13 +1,31 @@
-#Copyright 2025 TravelerEcho
-.text
-.section .text.except.others
+#Copyright 2026 TravelerEcho
+.file	1 "except_asm.s"
+.section .text.except_tlbrefill
+.globl  except_handler_tlbrefill_link
+.set	nomips16
+.set	nomicromips
+.ent    except_handler_tlbrefill_link
+.type   except_handler_tlbrefill_link, @function
+except_handler_tlbrefill_link:
+.frame	$fp,8,$31		# vars= 0, regs= 1/0, args= 0, gp= 0
+.mask	0x40000000,-4
+.fmask	0x00000000,0
+    nop
+.size   except_handler_tlbrefill_link,.-except_handler_tlbrefill_link
+.end    except_handler_tlbrefill_link
 
-
-.global except_handler_others_link
-.type except_handler_others_link, @function
+.section .text.except_others
+.globl  except_handler_others_link
+.set	nomips16
+.set	nomicromips
+.ent    except_handler_others_link
+.type   except_handler_others_link, @function
+except_handler_others_link:
+.frame	$fp,8,$31		# vars= 0, regs= 1/0, args= 0, gp= 0
+.mask	0x40000000,-4
+.fmask	0x00000000,0
     addiu   $sp, $sp, -128
     sw      $ra, 124($sp)
-    sw      $at, 120($sp)
     sw      $v0, 116($sp)
     sw      $v1, 112($sp)
     sw      $a0, 108($sp)
@@ -36,10 +54,8 @@
     mfc0    $a1, $13
     mfc0    $a2, $14
     jal     except_handler_others
-    nop
     #Resume
     lw      $ra, 124($sp)
-    lw      $at, 120($sp)
     lw      $v0, 116($sp)
     lw      $v1, 112($sp)
     lw      $a0, 108($sp)
@@ -66,3 +82,5 @@
     lw      $t9, 24($sp)
     addiu   $sp, $sp, 128
     ERET
+.size   except_handler_others_link,.-except_handler_others_link
+.end    except_handler_others_link

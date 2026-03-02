@@ -1,5 +1,4 @@
 #include "krnl.h"
-
 int serial_init() {
 	*(unsigned char*)(COM1 + 1)=0x00;	// Disable all interrupts
 	*(unsigned char*)(COM1 + 3)=0x80; 	// Enable DLAB
